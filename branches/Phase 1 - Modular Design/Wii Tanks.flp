@@ -1,0 +1,15 @@
+﻿<flash_project name="Wii Tanks" version="1">
+    <project_file path="./Wii Tanks.fla" filetype="fla" profile="" def_file="true" />
+    <project_file path="./ObjectMap.as" filetype="as" />
+    <project_file path="./data_level.as" filetype="as" />
+    <project_file path="./functions_basic.as" filetype="as" />
+    <project_file path="./functions_level.as" filetype="as" />
+    <project_file path="./functions_mouse.as" filetype="as" />
+    <project_file path="./functions_enemy1.as" filetype="as" />
+    <project_file path="./functions_player.as" filetype="as" />
+    <project_file path="./functions_bullet.as" filetype="as" />
+    <project_file path="./onEnterFrame.as" filetype="as" />
+    <project_file path="./functions_bomb.as" filetype="as" />
+    <project_file path="./functions_tank.as" filetype="as" />
+    <project_file path="./functions_explosion.as" filetype="as" />
+</flash_project>
