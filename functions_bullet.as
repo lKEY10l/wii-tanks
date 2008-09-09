@@ -50,6 +50,7 @@ function bullet_CheckBullet(idA:Number, idB:Number) {
 	}
 };
 
+
 function bullet_CheckWall(idA:Number, idB:Number) {
 	var bullet:Object = _root.bullet_container["bullet" + idA];
 	var wall:Object = _root.wall_container["wall" + idB];
@@ -63,20 +64,8 @@ function bullet_CheckWall(idA:Number, idB:Number) {
 		if (wall.base.hitTest(bullet._x, bullet._y, false) == true) {
 			hitTop = _root.toDegrees(Math.atan((0.5 * wall.base._width) / (0.5 * wall.base._height)));
 			hitSide = _root.toDegrees(Math.atan((0.5 * wall.base._height) / (0.5 * wall.base._width)));
-			hitAngle = Math.abs(_root.toDegrees(Math.atan((bullet._x - wall._x) / (wall._y - bullet._y))));
-
-			if ((bullet._x > wall._x) && 
-					(bullet._y > wall._y))
-				hitAngle = (90 - hitAngle) + 90;
-			else if ((bullet._x < wall._x) &&
-							 (bullet._y > wall._y))
-				hitAngle += 180;
-			else if ((bullet._x < wall._x) &&
-							 (bullet._y < wall._y))
-				hitAngle = (90 - hitAngle) + 270;
-
-			if (hitAngle > 180)
-				hitAngle = -1 * (360 - hitAngle);
+			hitAngle = _root.calcAngle(bullet._x, wall._x, bullet._y, wall._y);
+																			
 			oldRotation = bullet._rotation;
 
 			if (_root.isBetween(hitTop * -1, hitTop, hitAngle)) {
@@ -99,9 +88,12 @@ function bullet_CheckWall(idA:Number, idB:Number) {
 			
 			if (newRotation != oldRotation) {
 				bullet.hitCount ++;
-				//play sound
-				if (bullet.hitCount == 1) 
+				//play sound and animation for bounce
+				if (bullet.hitCount == 1)	{ 
 					_root.bullet_bounce.start(0,0);
+					_root.addBulletBounceExp(bullet._x, bullet._y);
+					
+				}
 			
 				else if (bullet.hitCount ==2) 
 					_root.bullet_explosion.start(0,0);
