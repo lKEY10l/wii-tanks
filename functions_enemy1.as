@@ -4,6 +4,7 @@
 	// Number of bullets on the board at once.
 	this.fireCount = 1;
 	// Is the tank is firing or dropping bombs?
+	this.speedVehicle = 3;
 	this.isFiring = 0;
 	this.isMining = 0;
 	this.isTread = 0;
