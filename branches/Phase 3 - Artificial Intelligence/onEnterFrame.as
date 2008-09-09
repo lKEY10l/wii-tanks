@@ -11,6 +11,9 @@ this.onEnterFrame = function() {
 	var areaBullets:Array;
 	var areaBombs:Array;
 	
+
+	
+	
 	// Draw the cursor
 	_root.lockCursor();
 	
