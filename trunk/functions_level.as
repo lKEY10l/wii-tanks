@@ -17,7 +17,7 @@ var cellH:Number = 32; 				// Height of tiles in pixels
 var objMap:ObjectMap = new ObjectMap(14, 25, 5, this.cellW, this.cellH);
 
 // Max objects allowed
-var maxTreads:Number = 500;		// Maximum number of treads on the board at once.
+var maxTreads:Number = 100;		// Maximum number of treads on the board at once.
 var maxSmokes:Number = 100;		// Maximum number of smoke on the board at once.
 var maxBullets:Number = 20;		// Maximum number of bullets on the board at once.
 var maxExplosions:Number = 50;// Maximum number of explosions on the board at once.
@@ -50,7 +50,6 @@ var intro = new Sound();
 	intro.attachSound("intro.mp3");
 	
 	
-	
 function addWall(x:Number, y:Number, type:Number) {s
 	_root.wall_container.attachMovie("wall", "wall"+this.wallCount, _root.wall_container.getNextHighestDepth());
 	_root.wall_container["wall"+this.wallCount]._x = x;
@@ -75,7 +74,7 @@ function addTank(x:Number, y:Number, type:Number) {
 	_root["enemy" + type + "_Create"].call(_root.tank_container["tank" + this.tankCount]);
 	
 	// Here are the basic movement tweens for the enemy (rotate turret)
-	_root.tank_container["tank" + this.tankCount].rotate = new Tween(_root.tank_container["tank" + this.tankCount], "currentRotation", None.easeNone, 90, 90, 10, false);
+//	_root.tank_container["tank" + this.tankCount].rotate = new Tween(_root.tank_container["tank" + this.tankCount], "currentRotation", None.easeNone, -90, -90, 10, false);
 
 	// Add it to the map.
 	this.objMap.addObject(this.tankCount, 1, x, y);
@@ -161,6 +160,16 @@ function addBulletSmoke(x:Number, y:Number) {
 
 function addBulletExplosion(x:Number, y:Number) {
 	_root.explosion_container.attachMovie("bullet_explosion", "explosion" + this.explosionCount, _root.explosion_container.getNextHighestDepth());
+	_root.explosion_container["explosion" + this.explosionCount]._x = x;
+	_root.explosion_container["explosion" + this.explosionCount]._y = y;
+	
+	this.explosionCount ++;
+	if (this.explosionCount > this.maxExplosions)
+		this.explosionCount = 0;
+};
+
+function addBulletBounceExp(x:Number, y:Number) {
+	_root.explosion_container.attachMovie("bullet_bounceExp", "explosion" + this.explosionCount, _root.explosion_container.getNextHighestDepth());
 	_root.explosion_container["explosion" + this.explosionCount]._x = x;
 	_root.explosion_container["explosion" + this.explosionCount]._y = y;
 	
@@ -274,6 +283,8 @@ function clearBoard() {
 	
 	// Clear the grid
 	this.objMap.clearAll();
+	// Clear the AI Nodes
+	this.node_Clear();
 	
 	// Reset the variables!
 	treadCount = 0;
@@ -293,6 +304,7 @@ function loadBoard(level:Number)
 {
 	var map:Array = this.mapData[level];
 	var enemies:Array = this.enemyData[level];
+	var nodes:Array = this.nodeData[level];
 	var mapWidth:Number = map[0].length;
 	var mapHeight:Number = map.length;
 	var x:Number;
@@ -319,9 +331,15 @@ function loadBoard(level:Number)
 				case 6:	// Add an enemy
 					this.addTank((j * this.cellW) + (.5 * this.cellW), (i * this.cellH) + (.5 * this.cellH), enemies[this.tankCount]);
 					break;
+				case 9:
+				trace(this.nodeCount);
+					this.node_Add((j * this.cellW) + (.5 * this.cellW), (i * this.cellH) + (.5 * this.cellH), nodes[this.nodeCount], this.cellW, this.cellH);
+					break;
 			}
 		}
 	}
+	
+	this.node_Calculate();
 }
 
 /**
@@ -339,8 +357,8 @@ function newLevel() {
 function endLevel() {
 	_root.pauseGame();
 	_root.attachMovie("mission_complete", "mission_complete", _root.getNextHighestDepth());
-	_root.mission_complete._x = 290;
-	_root.mission_complete._y = 200;
+	_root.mission_complete._x = 400;
+	_root.mission_complete._y = 125;
 }
 
 /**
@@ -348,9 +366,11 @@ function endLevel() {
  */
 function endGame() {
 	_root.pauseGame();
+	if (_root.mission_failed)
+		_root.mission_failed.removeMovieClip();
 	_root.attachMovie("mission_failed", "mission_failed", _root.getNextHighestDepth());
-	_root.mission_complete._x = 290;
-	_root.mission_complete._y = 200;
+	_root.mission_failed._x = 400;
+	_root.mission_failed._y = 125;
 }
 
 /**

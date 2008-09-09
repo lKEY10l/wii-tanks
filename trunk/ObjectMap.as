@@ -137,6 +137,39 @@
 
 		return names;
 	}
+	
+	
+	/**
+	 * Gets the adjacent objects of a specific type around a current location.
+	 * See picture below, gets names of all items in the 9 cells around 
+	 *  (including the current cell).
+	 * [ ][ ][ ]
+	 * [ ][x][ ]
+	 * [ ][ ][ ]
+	 */
+	public function getArea(xLoc:Number, yLoc:Number, type:Number, size:Number):Array {
+		var x:Number;
+		var y:Number;
+		var z:Number;
+		var currX:Number = Math.floor(xLoc / this.xSize);
+		var currY:Number = Math.floor(yLoc / this.ySize);
+		var names:Array = new Array();
+	
+		for (x = currX - size; x <= currX + size; x++) {
+			if (x >= 0 && x < this.colCount) {
+				for (y = currY - size; y <= currY + size; y++) {
+					if (y >= 0 && y < this.rowCount) {
+						for (z = 0; z < this.mapArray[type][x][y].length; z++) {
+							names[names.length] = this.mapArray[type][x][y][z];
+						}
+					}
+				}
+			}
+		}
+		
+		return names;
+	}
+	
 
 	/**
 	 * Clears the board.
