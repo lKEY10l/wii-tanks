@@ -12,4 +12,6 @@
     <project_file path="./functions_bomb.as" filetype="as" />
     <project_file path="./functions_tank.as" filetype="as" />
     <project_file path="./functions_explosion.as" filetype="as" />
+    <project_file path="./functions_ai.as" filetype="as" />
+    <project_file path="./functions_enemy2.as" filetype="as" />
 </flash_project>
