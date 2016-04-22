@@ -17,7 +17,7 @@ function player_RotateTurret() {
 };
 
 function player_MoveTank() {
-	// Adjust current rotation to match the fucked up one.
+	// Adjust current rotation to match the messed up one.
 	this.base._rotation = this.currentRotation % 360;
 	
 	// See if we are not "buzzed" for a sec
